@@ -12,9 +12,15 @@ const Login = (props) => {
   const [enteredPassword, setEnteredPassword] = useState("");
   const [passwordIsValid, setPasswordIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
-  useEffect(()=>{
-    console.log('Home component mounted');  
-  },[props])
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setFormIsValid(enteredEmail.includes('@') && enteredPassword.trim().length > 6);
+    }, 500)
+
+    return () => {
+      clearTimeout(timerId);
+    }
+  }, [enteredEmail,enteredPassword])
 
   const emailChangeHandler = (event) => {
     setEnteredEmail(event.target.value);
@@ -49,9 +55,8 @@ const Login = (props) => {
     <Card className={classes.login}>
       <form onSubmit={submitHandler}>
         <div
-          className={`${classes.control} ${
-            emailIsValid === false ? classes.invalid : ""
-          }`}
+          className={`${classes.control} ${emailIsValid === false ? classes.invalid : ""
+            }`}
         >
           <label htmlFor="email">E-Mail</label>
           <input
@@ -63,9 +68,8 @@ const Login = (props) => {
           />
         </div>
         <div
-          className={`${classes.control} ${
-            passwordIsValid === false ? classes.invalid : ""
-          }`}
+          className={`${classes.control} ${passwordIsValid === false ? classes.invalid : ""
+            }`}
         >
           <label htmlFor="password">Password</label>
           <input
